@@ -1,9 +1,6 @@
 package sample;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -13,6 +10,8 @@ public class Server {
     private Socket socket;
     private PrintWriter printWriter;
     private BufferedReader bufferedReader;
+    private DataOutputStream dataOutputStream;
+    private DataInputStream dataInputStream;
     private String input, output;
 
     public ServerSocket start()throws IOException{
@@ -56,17 +55,22 @@ public class Server {
                     try {
                         socket = serverSocket.accept();
                         System.out.println(socket + "Connected");
-                        printWriter = new PrintWriter(socket.getOutputStream());
-                        bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//                        printWriter = new PrintWriter(socket.getOutputStream());
+//                        bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                        dataInputStream = new DataInputStream(socket.getInputStream());
+                        dataOutputStream = new DataOutputStream(socket.getOutputStream());
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
                     }
 
                     try {
-                        String request = bufferedReader.readLine();
+//                        String request = bufferedReader.readLine();
+                        String request = dataInputStream.readUTF();
                         System.out.println("Client input Received: " + request);
-                        printWriter.println("It is :" + request);
-                        printWriter.flush();
+//                        printWriter.println("It is :" + request);
+//                        printWriter.flush();
+                        dataOutputStream.writeUTF("This is a "+ request);
+                        dataOutputStream.flush();
                         socket.close();
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
