@@ -29,7 +29,7 @@ public class Controller {
 
     public void initialize() throws IOException {
 
-        operation.getItems().addAll("Calculator","Logical Expression","Number Base Converter");
+        operation.getItems().addAll("Calculator","Logical Operation","Number Base Converter");
         select1.getItems().addAll("Binary","Octal","Decimal","Hexadecimal");
         select2.getItems().addAll("Binary","Octal","Decimal","Hexadecimal");
         selectlogic.getItems().addAll("AND","OR","NAND","NOR","XOR");
@@ -63,7 +63,7 @@ public class Controller {
         if (selected.equals("Calculator")){
             answer.setOpacity(1);
         }
-        else if(selected.equals("Logical Expression")){
+        else if(selected.equals("Logical Operation")){
             answer.setOpacity(0);
             input2.setOpacity(1);
             answer2.setOpacity(1);
@@ -81,7 +81,7 @@ public class Controller {
     }
 
     @FXML
-    private void send(Event event)throws IOException{
+    private void SendOnAction(Event event)throws IOException{
 
         if (operation.getSelectionModel().getSelectedItem() == null){
             Alert alert = new Alert(Alert.AlertType.WARNING,"Please select operation", ButtonType.OK);
@@ -102,7 +102,7 @@ public class Controller {
             out = client.sendInput(selected+","+inputbox.getText());
             inputbox2.setText(out);
         }
-        else if(selected.equals("Logical Expression")){
+        else if(selected.equals("Logical Operation")){
 
             if(inputbox.getText().equals("") || inputbox2.getText().equals("") || selectlogic.getSelectionModel().getSelectedItem() == null){
                 Alert alert = new Alert(Alert.AlertType.WARNING,"Please enter input", ButtonType.OK);
@@ -170,6 +170,15 @@ public class Controller {
 
 //        String out = client.sendInput(selected+","+input.getText());
 //        output.setText(out);
+    }
+
+    @FXML
+    private void ClearOnAction(){
+
+        inputbox.clear();
+        inputbox2.clear();
+        outputbox.clear();
+
     }
 
 

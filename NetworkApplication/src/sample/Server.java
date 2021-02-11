@@ -85,7 +85,7 @@ public class Server {
                                 dataOutputStream.writeUTF(Integer.toString(outputint));
                             }
                         }
-                        else if (check[0].equals("Logical Expression")){
+                        else if (check[0].equals("Logical Operation")){
 
                             String inputlogic = check[2]+check[3];
                             String logicoperation = check[1];
@@ -167,7 +167,7 @@ public class Server {
                             dataOutputStream.writeUTF(out);
 
                         }
-                        
+
                         dataOutputStream.flush();
                         stop();
                     } catch (Exception e) {
