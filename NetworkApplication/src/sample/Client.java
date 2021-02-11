@@ -6,8 +6,6 @@ import java.net.Socket;
 
 public class Client {
     private Socket socket;
-    private PrintWriter printWriter;
-    private BufferedReader bufferedReader;
     private DataOutputStream dataOutputStream;
     private DataInputStream dataInputStream;
     private String output;
@@ -17,8 +15,6 @@ public class Client {
         try {
             socket = new Socket(InetAddress.getLocalHost(), Server.SERVER_PORT);
             System.out.println("Connecting to port: "+ Server.SERVER_PORT);
-            printWriter = new PrintWriter(socket.getOutputStream());
-            bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
         }catch (IOException e){
@@ -27,24 +23,31 @@ public class Client {
 
     }
 
-    public String sendInput(String input) throws IOException {
-//        printWriter.println(input);
-//        printWriter.flush();
-        dataOutputStream.writeUTF(input);
-        dataOutputStream.flush();
+    public String sendInput(String input){
+        StartConnect();
         try {
-//            output = bufferedReader.readLine();
-            output = dataInputStream.readUTF();
-        }catch (Exception e){
+            dataOutputStream.writeUTF(input);
+            System.out.println("Client Sent: "+input);
+            dataOutputStream.flush();
+        }
+        catch (IOException e){
             System.err.println(e.getMessage());
         }
+        try {
+            output = dataInputStream.readUTF();
+        }catch (IOException e){
+            System.err.println(e.getMessage());
+        }
+        StopConnect();
         return output;
     }
 
-    public void StopConnect() throws IOException{
-        printWriter.close();
-        bufferedReader.close();
-        socket.close();
+    public void StopConnect(){
+        try {
+            socket.close();
+        }catch (IOException e){
+            System.err.println(e.getMessage());
+        }
     }
 
 }
